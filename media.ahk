@@ -1,3 +1,4 @@
+global mediaState:=1
 ; mute on pause + left
 ~Pause & Left:: 
 SoundSet, +1, , mute
@@ -19,6 +20,19 @@ return
 ~Pause & PgUp::
 send {Media_Prev}
 return
+; pause/resume media on pause + home
+~Pause & Home::
+if (mediaState==0) {
+    send {Media_Stop}
+    mediaState:=1
+}
+else if (mediaState==1) {
+    send {Media_Stop}
+    sleep 10
+    send {Media_Play_Pause}
+    mediaState:=0
+}
+return
 
 
 ; =====================
@@ -36,13 +50,17 @@ return
 run, % "calculator:"
 return
 
-; open powershell in the selected path
+; open powershell in the current folder
 ~#z::
+; copy the folder path
 send {F4}
 send ^a
 send ^c
+; open powershell (user mode)
 send #x
 send i
 sleep 300
+; change directory
 send cd ^v
 send {enter}
+return
