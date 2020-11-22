@@ -64,3 +64,11 @@ sleep 300
 send cd ^v
 send {enter}
 return
+
+
+; download from youtube as audio
+~+^d::
+send youtube-dl ^v 
+SendInput -x --audio-format m4a --audio-quality 0 --prefer-ffmpeg
+send {enter}
+return
